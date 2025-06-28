@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm Pilot - Smart Poultry Farm Management System</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js" integrity="sha512-L0Shl7nXXzIlBSUUPpxrokqq4ojqgZFQczTYlGjzONGTDAcLremjwaWv5A+EDLnxhQzY5xUZPWLOLqYRkY0Cbw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="style.css" 
+</head>
+<body>
+    <header class="header">
+        <h1>🐔 Farm Pilot</h1>
+        <p>Smart Poultry Farm Management System - Siddiqa Farm</p>
+    </header>
+
+    <nav class="nav-tabs">
+        <button class="nav-tab active" onclick="showModule('dashboard')">Dashboard</button>
+        <button class="nav-tab" onclick="showModule('egg-collection')">Egg Collection</button>
+        <button class="nav-tab" onclick="showModule('chicken-welfare')">Chicken Welfare</button>
+        <button class="nav-tab" onclick="showModule('sales')">Sales & Inventory</button>
+        <button class="nav-tab" onclick="showModule('financial')">Financial Management</button>
+        <button class="nav-tab" onclick="showModule('employees')">Employee Management</button>
+        <button class="nav-tab" onclick="showModule('reports')">Reports</button>
+    </nav>
+
+    <main class="main-content">
+        <!-- Dashboard Module -->
+        <div id="dashboard" class="module active">
+            <h2>📊 Dashboard Overview</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Today's Egg Collection</h3>
+                    <div class="value" id="todayEggs">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Inventory</h3>
+                    <div class="value" id="totalInventory">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Today's Sales</h3>
+                    <div class="value">₦<span id="todaySales">0</span></div>
+                </div>
+                <div class="stat-card">
+                    <h3>Active Chickens</h3>
+                    <div class="value" id="activeChickens">500</div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="chart-container">
+                    <h3>Weekly Egg Production</h3>
+                    <canvas id="productionChart" width="400" height="200"></canvas>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Egg Collection Module -->
+        <div id="egg-collection" class="module">
+            <h2>🥚 Egg Collection Management</h2>
+            
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="collectionDate">Collection Date</label>
+                    <input type="date" id="collectionDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="collectionTime">Collection Time</label>
+                    <input type="time" id="collectionTime" required>
+                </div>
+                <div class="form-group">
+                    <label for="employeeName">Employee Name</label>
+                    <select id="employeeName" required>
+                        <option value="">Select Employee</option>
+                        <option value="Alhassan Ibrahim">Alhassan Ibrahim</option>
+                        <option value="Yusuf Ibrahim">Yusuf Ibrahim</option>
+                        <option value="Bashir Ibrahim">Bashir Ibrahim</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="batchNumber">Batch Number</label>
+                    <select id="batchNumber" required>
+                        <option value="">Select Batch</option>
+                        <option value="Batch A">Batch A</option>
+                        <option value="Batch B">Batch B</option>
+                        <option value="Batch C">Batch C</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="goodEggs">Good Eggs Count</label>
+                    <input type="number" id="goodEggs" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="crackedEggs">Cracked Eggs Count</label>
+                    <input type="number" id="crackedEggs" min="0" value="0">
+                </div>
+            </div>
+
+            <button class="btn btn-primary" onclick="addEggCollection()">Record Collection</button>
+            <button class="btn btn-secondary" onclick="clearEggForm()">Clear Form</button>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Employee</th>
+                        <th>Batch</th>
+                        <th>Good Eggs</th>
+                        <th>Cracked Eggs</th>
+                        <th>Total</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="eggCollectionTable">
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Chicken Welfare Module -->
+        <div id="chicken-welfare" class="module">
+            <h2>🐓 Chicken Welfare Management</h2>
+            
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="welfareDate">Date</label>
+                    <input type="date" id="welfareDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="welfareBatch">Batch</label>
+                    <select id="welfareBatch" required>
+                        <option value="">Select Batch</option>
+                        <option value="Batch A">Batch A</option>
+                        <option value="Batch B">Batch B</option>
+                        <option value="Batch C">Batch C</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="feedQuantity">Feed Quantity (kg)</label>
+                    <input type="number" id="feedQuantity" min="0" step="0.1">
+                </div>
+                <div class="form-group">
+                    <label for="waterConsumption">Water Consumption (liters)</label>
+                    <input type="number" id="waterConsumption" min="0" step="0.1">
+                </div>
+                <div class="form-group">
+                    <label for="medicationName">Medication Name</label>
+                    <input type="text" id="medicationName">
+                </div>
+                <div class="form-group">
+                    <label for="medicationDosage">Dosage</label>
+                    <input type="text" id="medicationDosage">
+                </div>
+                <div class="form-group">
+                    <label for="mortalityCount">Mortality Count</label>
+                    <input type="number" id="mortalityCount" min="0" value="0">
+                </div>
+                <div class="form-group">
+                    <label for="mortalityCause">Suspected Cause</label>
+                    <input type="text" id="mortalityCause">
+                </div>
+            </div>
+
+            <button class="btn btn-primary" onclick="addWelfareRecord()">Add Record</button>
+            <button class="btn btn-secondary" onclick="clearWelfareForm()">Clear Form</button>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Batch</th>
+                        <th>Feed (kg)</th>
+                        <th>Water (L)</th>
+                        <th>Medication</th>
+                        <th>Mortality</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="welfareTable">
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Sales & Inventory Module -->
+        <div id="sales" class="module">
+            <h2>💰 Sales & Inventory Management</h2>
+            
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="saleDate">Sale Date</label>
+                    <input type="date" id="saleDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="customerName">Customer Name</label>
+                    <input type="text" id="customerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="customerPhone">Customer Phone</label>
+                    <input type="tel" id="customerPhone">
+                </div>
+                <div class="form-group">
+                    <label for="quantitySold">Quantity (Crates)</label>
+                    <input type="number" id="quantitySold" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="pricePerCrate">Price per Crate (₦)</label>
+                    <input type="number" id="pricePerCrate" min="0" step="0.01" value="2500" required>
+                </div>
+                <div class="form-group">
+                    <label for="paymentMethod">Payment Method</label>
+                    <select id="paymentMethod" required>
+                        <option value="">Select Method</option>
+                        <option value="Cash">Cash</option>
+                        <option value="POS">POS</option>
+                        <option value="Bank Transfer">Bank Transfer</option>
+                        <option value="Credit">Credit</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" onclick="addSale()">Record Sale</button>
+            <button class="btn btn-secondary" onclick="generateInvoice()">Generate Invoice</button>
+            <button class="btn btn-secondary" onclick="clearSalesForm()">Clear Form</button>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Customer</th>
+                        <th>Quantity</th>
+                        <th>Price/Crate</th>
+                        <th>Total Amount</th>
+                        <th>Payment Method</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="salesTable">
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Financial Management Module -->
+        <div id="financial" class="module">
+            <h2>💳 Financial Management</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Revenue</h3>
+                    <div class="value">₦<span id="totalRevenue">0</span></div>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Expenses</h3>
+                    <div class="value">₦<span id="totalExpenses">0</span></div>
+                </div>
+                <div class="stat-card">
+                    <h3>Net Profit</h3>
+                    <div class="value">₦<span id="netProfit">0</span></div>
+                </div>
+                <div class="stat-card">
+                    <h3>Outstanding Credits</h3>
+                    <div class="value">₦<span id="outstandingCredits">0</span></div>
+                </div>
+            </div>
+
+            <h3>Add Expense</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="expenseDate">Date</label>
+                    <input type="date" id="expenseDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="expenseCategory">Category</label>
+                    <select id="expenseCategory" required>
+                        <option value="">Select Category</option>
+                        <option value="Feed">Feed</option>
+                        <option value="Medicine">Medicine</option>
+                        <option value="Fuel">Fuel</option>
+                        <option value="Repair">Repair</option>
+                        <option value="Salary">Salary</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="expenseAmount">Amount (₦)</label>
+                    <input type="number" id="expenseAmount" min="0" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="expenseDescription">Description</label>
+                    <input type="text" id="expenseDescription" required>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" onclick="addExpense()">Add Expense</button>
+            <button class="btn btn-secondary" onclick="clearExpenseForm()">Clear Form</button>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Category</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="expenseTable">
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Employee Management Module -->
+        <div id="employees" class="module">
+            <h2>👥 Employee Management</h2>
+            
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="empName">Employee Name</label>
+                    <input type="text" id="empName" required>
+                </div>
+                <div class="form-group">
+                    <label for="empPhone">Phone Number</label>
+                    <input type="tel" id="empPhone" required>
+                </div>
+                <div class="form-group">
+                    <label for="empRole">Role</label>
+                    <select id="empRole" required>
+                        <option value="">Select Role</option>
+                        <option value="Farm Worker">Farm Worker</option>
+                        <option value="Supervisor">Supervisor</option>
+                        <option value="Manager">Manager</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="empSalary">Monthly Salary (₦)</label>
+                    <input type="number" id="empSalary" min="0" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="empStartDate">Start Date</label>
+                    <input type="date" id="empStartDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="empStatus">Status</label>
+                    <select id="empStatus" required>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" onclick="addEmployee()">Add Employee</button>
+            <button class="btn btn-secondary" onclick="clearEmployeeForm()">Clear Form</button>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Role</th>
+                        <th>Salary</th>
+                        <th>Start Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="employeeTable">
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Reports Module -->
+        <div id="reports" class="module">
+            <h2>📋 Reports & Analytics</h2>
+            
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="reportType">Report Type</label>
+                    <select id="reportType" required>
+                        <option value="">Select Report Type</option>
+                        <option value="egg-production">Egg Production Summary</option>
+                        <option value="sales-report">Sales Report</option>
+                        <option value="expense-report">Expense Report</option>
+                        <option value="welfare-report">Chicken Welfare Report</option>
+                        <option value="profit-loss">Profit & Loss Statement</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="reportStartDate">Start Date</label>
+                    <input type="date" id="reportStartDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="reportEndDate">End Date</label>
+                    <input type="date" id="reportEndDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="reportFormat">Export Format</label>
+                    <select id="reportFormat" required>
+                        <option value="pdf">PDF</option>
+                        <option value="excel">Excel</option>
+                        <option value="csv">CSV</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" onclick="generateReport()">Generate Report</button>
+            <button class="btn btn-secondary" onclick="previewReport()">Preview</button>
+
+            <div id="reportPreview" style="margin-top: 2rem; display: none;">
+                <h3>Report Preview</h3>
+                <div id="reportContent"></div>
+            </div>
+        </div>
+    </main>
+    <script src="script.js"></script>
+    <script src="path/to/chartjs/dist/chart.umd.min.js"></script>
+<script>
+    const myChart = new Chart(ctx, {});
+</script>
+</body>
+</html>
